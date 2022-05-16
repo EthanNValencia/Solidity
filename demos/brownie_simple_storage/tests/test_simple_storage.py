@@ -5,7 +5,7 @@ from brownie import SimpleStorage, accounts
 
 # brownie networks list     <- This will list available test networks
 # About Networks - Development Networks
-# Development networks will not persist. They are temporary. (Ganache-CLI, Geth Dev, Hardhat, ...)
+# Development networks will not persist. They are temporary. They only live as long as local utilization is taking place. (Ganache-CLI, Geth Dev, Hardhat, ...)
 # About Networks - Ethereum Networks
 # Ethereum networks will persist. (Rinkby, Kovan, Ropsten, ...)
 
@@ -35,4 +35,4 @@ def test_update_storage():  # brownie test -k test_update_storage
 # Useful Commands
 # brownie test --pdb    <- If a test fails this will open a python shell
 # brown test -s         <- This will print more descriptive information
-# https://docs.pytest.org/en/6.2.x/contents.html pytest has a lot of information about additional cmds
+# https://docs.pytest.org/en/6.2.x/contents.html pytest has a lot of information about additional cmds that are mirrored in brownie
