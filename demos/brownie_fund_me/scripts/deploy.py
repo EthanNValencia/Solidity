@@ -18,3 +18,7 @@ def deploy_fund_me():
 
 def main():
     deploy_fund_me()
+
+
+# Deploy to Mainnet Fork Dev
+# brownie run scripts/deploy --network mainnet-fork-dev

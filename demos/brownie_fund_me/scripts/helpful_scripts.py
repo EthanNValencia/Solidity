@@ -5,7 +5,7 @@ from brownie import network, MockV3Aggregator, config, accounts, FundMe
 DECIMALS = 8
 STARTING_PRICE = 200000000000
 LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["development", "ganache-local"]
-FORKED_LOCAL_ENVIRONMENTS = ["mainnet-fork"]
+FORKED_LOCAL_ENVIRONMENTS = ["mainnet-fork", "mainnet-fork-dev"]
 
 # This method will provide the credentials for either a development network or a test network (whichever is being deployed to).
 def get_account():
