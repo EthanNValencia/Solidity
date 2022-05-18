@@ -7,8 +7,10 @@ import "@chainlink/contracts/src/v0.6/VRFConsumerBase.sol";
 
 contract Lottery is VRFConsumerBase, Ownable {
     address payable[] public players;
-    uint256 usdEntryFee;
+    uint256 public usdEntryFee;
+    uint256 public randomness; // Recent random number
     AggregatorV3Interface internal ethUsdPriceFeed;
+    address payable public recentWinner; // Address of recent winner.
     enum LOTTERY_STATE {
         OPEN,
         CLOSED,
@@ -18,6 +20,11 @@ contract Lottery is VRFConsumerBase, Ownable {
     uint256 public fee;
     bytes32 public keyHash;
 
+    // Notes on Constructors
+    /* Constructors in Solidity are like initialization methods. They are only called when the contract is deployed to the blockchain.
+     * Constructors should probably be public (generally). Making a constructor internal can be useful because it can then be called by
+     * another contract within the same file.
+     */
     constructor(
         address _priceFeedAddress,
         address _vrfCoordinator,
@@ -60,5 +67,24 @@ contract Lottery is VRFConsumerBase, Ownable {
 
     function endLottery() public onlyOwner {
         lottery_state = LOTTERY_STATE.CALCULATING_WINNER;
+        bytes32 requestId = requestRandomness(keyHash, fee);
+    }
+
+    function fulfillRandomness(bytes32 _requestId, uint256 _randomness)
+        internal
+        override
+    {
+        require(
+            lottery_state == LOTTERY_STATE.CALCULATING_WINNER,
+            "The contract is not in the correct state."
+        );
+        require(_randomness > 0, "Random variable was not found.");
+        uint256 indexOfWinner = _randomness % players.length;
+        recentWinner = players[indexOfWinner];
+        recentWinner.transfer(address(this).balance);
+        // Reset Lottery
+        players = new address payable[](0);
+        randomness = _randomness;
+        lottery_state = LOTTERY_STATE.CLOSED;
     }
 }
