@@ -70,8 +70,9 @@ def fund_with_link(
 ):  # 0.1 link
     account = account if account else get_account()
     link_token = link_token if link_token else get_contract("link_token")
-    link_token_contract = interface.LinkTokenInterface(link_token.address)
-    # tx = link_token.transfer(contract_address, amount, {"from": account})
+    # link_token_contract = interface.LinkTokenInterface(link_token.address) # This uses the interface to interact with the ABI.
+    # link_token_contract.transfer(contract_address, amount, {"from": account})
+    tx = link_token.transfer(contract_address, amount, {"from": account})
     tx.wait(1)
     print("Funded contract!")
     return tx
